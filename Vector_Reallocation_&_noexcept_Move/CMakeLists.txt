@@ -1,0 +1,22 @@
+cmake_minimum_required(VERSION 3.16)
+project(vector_moves LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
+endif()
+
+if(MSVC)
+  add_compile_options(/W4 /permissive-)
+else()
+  add_compile_options(-Wall -Wextra -Wpedantic)
+  option(ENABLE_MARCH_NATIVE "Enable -march=native in Release builds" ON)
+  if(ENABLE_MARCH_NATIVE AND CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_compile_options(-march=native)
+  endif()
+endif()
+
+file(GLOB SRC CONFIGURE_DEPENDS *.cpp)
+add_executable(vector_moves ${SRC})
